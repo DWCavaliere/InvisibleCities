@@ -12,13 +12,13 @@ torch.setdefaulttensortype('torch.FloatTensor')
 opt = {
     DATA_ROOT = '',           -- path to images (should have subfolders 'train', 'val', etc)
     batchSize = 1,            -- # images in batch
-    loadSize = 256,           -- scale images to this size
-    fineSize = 256,           --  then crop to this size
+    loadSize = 512,           -- scale images to this size
+    fineSize = 512,           -- then crop to this size
     flip=0,                   -- horizontal mirroring data augmentation
     display = 1,              -- display samples while training. 0 = false
     display_id = 200,         -- display window id.
     gpu = 1,                  -- gpu = 0 is CPU mode. gpu=X is GPU mode on GPU X
-    how_many = 'all',         -- how many test images to run (set to all to run on every image found in the data/phase folder)
+    how_many = 'all',            -- how many test images to run (set to all to run on every image found in the data/phase folder)
     which_direction = 'BtoA', -- AtoB or BtoA
     phase = 'val',            -- train, val, test ,etc
     preprocess = 'regular',   -- for special purpose preprocessing, e.g., for colorization, change this (selects preprocessing functions in util.lua)
@@ -91,6 +91,8 @@ if opt.how_many=='all' then
 end
 opt.how_many=math.min(opt.how_many, data:size())
 
+
+
 local filepaths = {} -- paths to images tested on
 for n=1,math.floor(opt.how_many/opt.batchSize) do
     print('processing batch ' .. n)
@@ -148,20 +150,3 @@ for n=1,math.floor(opt.how_many/opt.batchSize) do
     
     filepaths = TableConcat(filepaths, filepaths_curr)
 end
-
--- make webpage
-io.output(paths.concat(opt.results_dir,opt.netG_name .. '_' .. opt.phase, 'index.html'))
-
-io.write('<table style="text-align:center;">')
-
-io.write('<tr><td>Image #</td><td>Input</td><td>Output</td><td>Ground Truth</td></tr>')
-for i=1, #filepaths do
-    io.write('<tr>')
-    io.write('<td>' .. filepaths[i] .. '</td>')
-    io.write('<td><img src="./images/input/' .. filepaths[i] .. '"/></td>')
-    io.write('<td><img src="./images/output/' .. filepaths[i] .. '"/></td>')
-    io.write('<td><img src="./images/target/' .. filepaths[i] .. '"/></td>')
-    io.write('</tr>')
-end
-
-io.write('</table>')

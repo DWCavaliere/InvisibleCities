@@ -109,7 +109,7 @@ var gui = function(p)
     }
 
     this.mouseReleased = function(x, y) {
-      if (this.highlighted) {
+      if (x > this.x && x < this.x + this.w && y > this.y && y < this.y + this.h) {
         this.callback();
       }
     }
@@ -174,9 +174,31 @@ var sketcher = function (p)
     }
   }
 
+  p.touchStarted = function(){
+    recording = true;
+    if (mode == 0) {
+      p.createNew(new Blob(false, p.color(0,0,0), 4, 12));
+    } else if (mode == 1) {
+      p.createNew(new Blob(true, p.color(0,255,0), 0, 12));
+    } else if (mode == 2) {
+      p.createNew(new Blob(true, p.color(0,0,255), 0, 20));
+    } else if (mode == 3) {
+      p.createNew(new Blob(true, p.color(255,0,0), 0, 12));
+    }
+  }
+
+  p.touchMoved = function(){
+    if (recording) {
+      currentBlob.mouseMoved(p.touchX, p.touchY);
+    }
+  }
+
+  p.touchEnded = function(){
+    recording = false;;
+  }
+
   p.createNew = function(blob) {
     currentBlob = blob;
-    blob.add(p.mouseX, p.mouseY);
     blobs.push(blob);
   }
 
