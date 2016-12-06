@@ -1,3 +1,7 @@
+Drawing interface for [Invisible Cities](http://opendot.github.io/ml4a-invisible-cities/), using [pix2pix](https://github.com/phillipi/pix2pix), [p5.js](http://p5js.org), and [node](https://nodejs.org/en/). 
+
+Watch it in action [here](https://vimeo.com/194531286).
+
 First install node modules.
 
     npm install
